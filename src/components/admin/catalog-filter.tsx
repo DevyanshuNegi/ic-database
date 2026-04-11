@@ -39,7 +39,7 @@ export function CatalogFilter() {
   return (
     <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
       <Input
-        placeholder="Search IC name or aliases..."
+        placeholder="Search name, aliases, or description..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="max-w-sm"

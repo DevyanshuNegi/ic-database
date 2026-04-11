@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <Input
-          placeholder="Search by IC Name or Alias..."
+          placeholder="Search by name, alias, or description..."
           defaultValue={searchParams.get("search") || ""}
           onChange={handleSearch}
           className="max-w-sm"

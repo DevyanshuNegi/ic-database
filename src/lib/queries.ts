@@ -32,6 +32,7 @@ export async function getIcsForLobby({
         OR: [
           { canonicalName: { contains: search, mode: "insensitive" } },
           { aliases: { some: { name: { contains: search, mode: "insensitive" } } } },
+          { description: { contains: search, mode: "insensitive" } },
         ],
       } : {},
       category ? { category } : {},

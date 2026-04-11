@@ -32,6 +32,7 @@ export default async function AdminCatalogPage({
           OR: [
             { canonicalName: { contains: search, mode: "insensitive" } },
             { aliases: { some: { name: { contains: search, mode: "insensitive" } } } },
+            { description: { contains: search, mode: "insensitive" } },
           ],
         } : {},
         category ? { category } : {},
