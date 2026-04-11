@@ -3,6 +3,7 @@ import { getIcsForLobby } from "@/lib/queries";
 import { prisma } from "@/lib/prisma";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+import { RequestIcModal } from "@/components/intern/request-ic-modal";
 
 export default async function BrowsePage({
   searchParams,
@@ -43,9 +44,12 @@ export default async function BrowsePage({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Browse ICs</h1>
-        <p className="text-muted-foreground">Find and claim ICs for your project. You can claim up to 3 ICs at a time.</p>
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-bold tracking-tight">Browse ICs</h1>
+          <p className="text-muted-foreground">Find and claim ICs for your project. You can claim up to 3 ICs at a time.</p>
+        </div>
+        <RequestIcModal />
       </div>
       
       <DataTable 

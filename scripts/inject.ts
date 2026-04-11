@@ -86,7 +86,7 @@ async function main() {
       batchId = b.id;
       createdBatches.add(key);
     }
-    batchRecords.set(label, batchId);
+    batchRecords.set(label, batchId!);
   }
 
   console.log("Creating Batch Enrollments...");

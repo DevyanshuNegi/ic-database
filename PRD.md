@@ -1028,9 +1028,9 @@ const statusColors = {
 | 3a | Intern dashboard: task cards + history table | ☐ |
 | 3b | Intern browse: server-side table with search/filter/claim | ☐ |
 | 3c | Request New IC modal with regex + AddRequest fallback | ☐ |
-| 4a | Admin dashboard: stats cards + quick tables | ☐ |
-| 4b | Admin interns: searchable, sortable table | ☐ |
-| 4c | Admin intern detail: full task history + inline review | ☐ |
+| 4a | Admin dashboard: stats cards + quick tables | ☒ |
+| 4b | Admin interns: searchable, sortable table | ☒ |
+| 4c | Admin intern detail: full task history + inline review | ☒ |
 | 4d | Admin catalog: filtered table + Add IC dialog | ☐ |
 | 4e | Admin IC detail: edit metadata + alias manager | ☐ |
 | 5a | Admin review queue: approve + mandatory-note reject | ☐ |
