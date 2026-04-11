@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
 export async function GET() {
-  if (process.env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV !== "development" && process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH !== "true") {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   const users = await prisma.user.findMany({

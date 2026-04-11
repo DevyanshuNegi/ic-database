@@ -16,8 +16,12 @@ export function DevUserSwitcher() {
   const [activeUserId, setActiveUserId] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
+  const isMockAuthEnabled =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH === "true";
+
   useEffect(() => {
-    if (process.env.NODE_ENV !== "development") return;
+    if (!isMockAuthEnabled) return;
     fetch("/api/dev/users")
       .then((res) => res.json())
       .then((data) => {
@@ -25,9 +29,9 @@ export function DevUserSwitcher() {
         setActiveUserId(data.activeUserId || data.users[0]?.id || "");
       })
       .catch(console.error);
-  }, []);
+  }, [isMockAuthEnabled]);
 
-  if (process.env.NODE_ENV !== "development") {
+  if (!isMockAuthEnabled) {
     return null;
   }
 

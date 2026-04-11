@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ESIM_USER_COOKIE } from "@/lib/auth";
 
 export async function GET(request: Request) {
-  if (process.env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV !== "development" && process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH !== "true") {
     return new NextResponse("Not found", { status: 404 });
   }
   
