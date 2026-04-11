@@ -68,9 +68,9 @@ export function RequestIcModal() {
           <div className="grid gap-2">
             <div className="flex items-center gap-1">
               <Label htmlFor="icName">Full Manufacturer Part Number</Label>
-              <TooltipProvider>
-                <Tooltip delayDuration={300}>
-                  <TooltipTrigger asChild>
+              <TooltipProvider delay={300}>
+                <Tooltip>
+                  <TooltipTrigger className="inline-flex">
                     <Info className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
