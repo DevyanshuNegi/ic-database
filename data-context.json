@@ -1,0 +1,26 @@
+{
+  "enums": {
+    "categories": [
+      "COMPARATOR",
+      "DEVICE_MODEL",
+      "DIGITAL_LOGIC",
+      "IP_BLOCK",
+      "MIXED_SIGNAL",
+      "OP_AMP",
+      "OTHER",
+      "VOLTAGE_REGULATOR"
+    ],
+    "technologies": [
+      "ANALOG",
+      "BICMOS",
+      "CMOS",
+      "TTL",
+      "UNSPECIFIED"
+    ]
+  },
+  "stats": {
+    "totalItems": 804,
+    "withAliases": 727,
+    "withAssignments": 692
+  }
+}
