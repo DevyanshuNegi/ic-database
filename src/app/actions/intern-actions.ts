@@ -44,7 +44,7 @@ export async function claimTaskAction(icId: string) {
     return { error: "No active enrollment found" };
   }
 
-  const activeTaskCount = enrollment.tasks.filter(t => ["CLAIMED", "IN_PROGRESS", "UNDER_REVIEW"].includes(t.status)).length;
+  const activeTaskCount = enrollment.tasks.filter(t => ["CLAIMED", "IN_PROGRESS"].includes(t.status)).length;
   
   if (activeTaskCount >= 3) {
     return { error: "You have reached the 3-task limit. Complete or submit a task to claim more." };

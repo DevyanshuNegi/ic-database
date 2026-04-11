@@ -39,7 +39,7 @@ export default async function BrowsePage({
     batchId: activeEnrollment.batchId
   });
 
-  const activeTaskCount = activeEnrollment.tasks.filter(t => ["CLAIMED", "IN_PROGRESS", "UNDER_REVIEW"].includes(t.status)).length;
+  const activeTaskCount = activeEnrollment.tasks.filter(t => ["CLAIMED", "IN_PROGRESS"].includes(t.status)).length;
   const canClaim = activeTaskCount < 3;
 
   return (

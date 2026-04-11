@@ -23,9 +23,10 @@ export default async function InternDashboardPage() {
   }
 
   const activeTasks = data.tasks.filter(t => ["CLAIMED", "IN_PROGRESS", "UNDER_REVIEW"].includes(t.status));
+  const activeTaskCountForLimit = data.tasks.filter(t => ["CLAIMED", "IN_PROGRESS"].includes(t.status)).length;
   const completedCount = data.tasks.filter(t => t.status === "COMPLETED").length;
   const failedCount = data.tasks.filter(t => t.status === "FAILED").length;
-  const hasReachedLimit = activeTasks.length >= 3;
+  const hasReachedLimit = activeTaskCountForLimit >= 3;
 
   function StatusBadge({ status }: { status: string }) {
     switch(status) {
@@ -51,7 +52,7 @@ export default async function InternDashboardPage() {
               <CardTitle className="text-3xl">{user.name}</CardTitle>
             </div>
             <Badge variant="secondary" className="text-sm px-3 py-1">
-              Active: {activeTasks.length}/3
+              Active: {activeTaskCountForLimit}/3
             </Badge>
           </div>
         </CardHeader>
