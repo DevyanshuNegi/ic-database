@@ -154,6 +154,7 @@ export default async function AdminRequestsPage({
                         requestId={req.id}
                         rawName={req.rawName}
                         normalizedName={req.normalizedName || ""}
+                        suggestedAliases={req.suggestedAliases || []}
                         internName={req.requester.name}
                       />
                     ) : (

@@ -10,6 +10,8 @@ export async function processAddRequest(
   payload: {
     mergeWithIcId?: string;
     reviewNote?: string;
+    finalName?: string;
+    finalAliases?: string[];
   }
 ) {
   const user = await requireRole(["ADMIN", "MENTOR"]);
@@ -40,20 +42,46 @@ export async function processAddRequest(
     }
 
     if (action === "APPROVE_AS_NEW") {
+      const canonicalName = payload.finalName || request.normalizedName!;
+      const aliases = payload.finalAliases || [];
+      const normalizedAliases = aliases.map(a => a.toUpperCase().replace(/\s+/g, ""));
+
       const existingIc = await prisma.iC.findUnique({
-        where: { canonicalName: request.normalizedName! },
+        where: { canonicalName },
       });
       
       if (existingIc) {
-        return { error: "An IC with this name already exists. Please merge it instead." };
+        return { error: "An IC with this canonical name already exists. Please merge it instead." };
+      }
+
+      if (normalizedAliases.length > 0) {
+        const existingAliases = await prisma.iCAlias.findMany({
+          where: { name: { in: normalizedAliases } }
+        });
+        if (existingAliases.length > 0) {
+          return { error: `These aliases already exist: ${existingAliases.map(a => a.name).join(", ")}` };
+        }
+
+        const conflictingCanonical = await prisma.iC.findMany({
+          where: { canonicalName: { in: normalizedAliases } }
+        });
+        if (conflictingCanonical.length > 0) {
+           return { error: `These aliases conflict with existing ICs: ${conflictingCanonical.map(c => c.canonicalName).join(", ")}` };
+        }
       }
 
       await prisma.$transaction(async (tx) => {
         const newIc = await tx.iC.create({
           data: {
-            canonicalName: request.normalizedName!,
+            canonicalName,
             category: "OTHER",
             technology: "UNSPECIFIED",
+            aliases: normalizedAliases.length > 0 ? {
+              create: normalizedAliases.map(name => ({
+                name,
+                note: "Added during IC request approval"
+              }))
+            } : undefined
           },
         });
 

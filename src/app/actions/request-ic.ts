@@ -3,22 +3,43 @@
 import { requireRole } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+
+const AddRequestSchema = z.object({
+  icName: z
+    .string()
+    .min(1, "Please provide a valid IC name.")
+    .transform((val) => val.toUpperCase().replace(/\s+/g, ""))
+    .pipe(
+      z.string().regex(/^[A-Z0-9\-\_\/\+]{2,40}$/, {
+        message:
+          "Invalid format. Only letters, numbers, hyphens, slashes, and underscores are allowed (2-40 characters).",
+      })
+    ),
+  icAliases: z.string().optional(),
+});
 
 export async function requestIcAction(formData: FormData) {
   const user = await requireRole("INTERN");
-  const rawName = formData.get("icName")?.toString();
-  const aliasesRaw = formData.get("icAliases")?.toString();
+  
+  const parsed = AddRequestSchema.safeParse({
+    icName: formData.get("icName")?.toString() || "",
+    icAliases: formData.get("icAliases")?.toString(),
+  });
 
-  const suggestedAliases = aliasesRaw 
-    ? aliasesRaw.split(",").map(s => s.trim()).filter(s => s.length > 0)
-    : [];
-
-  if (!rawName || rawName.trim().length === 0) {
-    return { error: "Please provide a valid IC name." };
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message };
   }
 
-  // Step 1: Normalize input
-  const normalizedName = rawName.toUpperCase().replace(/\s+/g, "");
+  const { icName: normalizedName, icAliases } = parsed.data;
+
+  // We still need the original "raw" name to satisfy the database model,
+  // but we can just use the user's un-transformed input for that.
+  const rawName = formData.get("icName")?.toString() || "";
+
+  const suggestedAliases = icAliases 
+    ? icAliases.split(",").map(s => s.trim()).filter(s => s.length > 0)
+    : [];
 
   // Step 2: Check if canonicalName already exists
   const existingIc = await prisma.iC.findFirst({

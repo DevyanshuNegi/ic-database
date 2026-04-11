@@ -41,7 +41,7 @@ export function DevUserSwitcher() {
 
   return (
     <div className="flex items-center gap-2 border-l pl-4 ml-4">
-      <span className="text-xs text-muted-foreground whitespace-nowrap">Dev Switcher:</span>
+      <span className="text-xs text-muted-foreground whitespace-nowrap">Dev Switcher (for easy testing):</span>
       <Select
         value={activeUserId}
         onValueChange={(val) => {

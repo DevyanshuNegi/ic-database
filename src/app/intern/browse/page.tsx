@@ -49,7 +49,13 @@ export default async function BrowsePage({
           <h1 className="text-3xl font-bold tracking-tight">Browse ICs</h1>
           <p className="text-muted-foreground">Find and claim ICs for your project. You can claim up to 3 ICs at a time.</p>
         </div>
-        <RequestIcModal />
+        <div className="flex flex-col items-end gap-1">
+          <RequestIcModal />
+          <div className="px-2 py-1 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-400 border border-amber-200 dark:border-amber-900/50 rounded flex items-center gap-1 shadow-sm mt-1">
+            <span className="text-[10px] uppercase font-bold tracking-wider">Note</span>
+            <span className="text-[11px] font-medium text-amber-900/80 dark:text-amber-300">Search aliases thoroughly!</span>
+          </div>
+        </div>
       </div>
       
       <DataTable 

@@ -56,11 +56,11 @@ export function ReviewActionModal({ taskId, icName, internName, action }: Review
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger render={
         <Button variant={buttonVariant} size="sm">
           {action === "approve" ? "Approve" : "Reject"}
         </Button>
-      </DialogTrigger>
+      } />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title} - {icName}</DialogTitle>

@@ -17,17 +17,22 @@ import { processAddRequest, searchICsForMerge } from "@/app/actions/request-acti
 import { toast } from "sonner";
 import { Search } from "lucide-react";
 
+import { Label } from "@/components/ui/label";
+
 interface RequestReviewModalProps {
   requestId: string;
   rawName: string;
   normalizedName: string;
+  suggestedAliases: string[];
   internName: string;
 }
 
-export function RequestReviewModal({ requestId, rawName, normalizedName, internName }: RequestReviewModalProps) {
+export function RequestReviewModal({ requestId, rawName, normalizedName, suggestedAliases, internName }: RequestReviewModalProps) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"MERGE" | "APPROVE_AS_NEW" | "REJECT">("MERGE");
   const [note, setNote] = useState("");
+  const [canonicalName, setCanonicalName] = useState(normalizedName || "");
+  const [aliases, setAliases] = useState(suggestedAliases?.join(", ") || "");
   const [search, setSearch] = useState("");
   const [options, setOptions] = useState<{id: string, canonicalName: string}[]>([]);
   const [selectedIcId, setSelectedIcId] = useState<string>("");
@@ -55,12 +60,19 @@ export function RequestReviewModal({ requestId, rawName, normalizedName, internN
       toast.error("Please select an IC to merge with.");
       return;
     }
+    if (mode === "APPROVE_AS_NEW" && !canonicalName.trim()) {
+      toast.error("Canonical Name is required.");
+      return;
+    }
 
     setIsLoading(true);
     try {
+      const parsedAliases = aliases.split(",").map(a => a.trim()).filter(a => a.length > 0);
       const result = await processAddRequest(requestId, mode, {
         mergeWithIcId: mode === "MERGE" ? selectedIcId : undefined,
         reviewNote: note,
+        finalName: mode === "APPROVE_AS_NEW" ? canonicalName.trim() : undefined,
+        finalAliases: mode === "APPROVE_AS_NEW" ? parsedAliases : undefined,
       });
 
       if (result.success) {
@@ -78,9 +90,7 @@ export function RequestReviewModal({ requestId, rawName, normalizedName, internN
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button variant="outline" size="sm">Review</Button>
-      </DialogTrigger>
+      <DialogTrigger render={<Button variant="outline" size="sm">Review</Button>} />
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Review Add Request</DialogTitle>
@@ -139,11 +149,33 @@ export function RequestReviewModal({ requestId, rawName, normalizedName, internN
           )}
 
           {mode === "APPROVE_AS_NEW" && (
-             <div className="space-y-2">
+             <div className="space-y-4">
                <p className="text-sm">
-                 This will create a new IC with the canonical name: <strong>{normalizedName}</strong>. 
-                 The intern's task will then be successfully merged and linked to this IC.
+                 Create a new IC and link the intern's task to it.
                </p>
+               <div className="grid gap-2">
+                 <Label htmlFor="canonicalName">Canonical Name</Label>
+                 <Input 
+                   id="canonicalName"
+                   value={canonicalName}
+                   onChange={(e) => setCanonicalName(e.target.value.toUpperCase().replace(/\s+/g, ""))}
+                 />
+               </div>
+               <div className="grid gap-2 mt-2">
+                 <Label htmlFor="aliases" className="flex items-center justify-between">
+                   <span>Aliases (Optional)</span>
+                   <span className="text-xs text-muted-foreground font-normal">Comma-separated</span>
+                 </Label>
+                 <Input 
+                   id="aliases"
+                   value={aliases}
+                   onChange={(e) => setAliases(e.target.value)}
+                   placeholder="e.g. LM741, 741 Op-Amp"
+                 />
+                 <p className="text-xs text-muted-foreground">
+                   Intern suggested: {suggestedAliases?.length ? suggestedAliases.join(", ") : "None"}
+                 </p>
+               </div>
              </div>
           )}
 

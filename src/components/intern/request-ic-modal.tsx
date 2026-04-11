@@ -13,9 +13,16 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Textarea } from "@/components/ui/textarea";
 import { requestIcAction } from "@/app/actions/request-ic";
 import { toast } from "sonner";
-import { Plus } from "lucide-react";
+import { Plus, Info } from "lucide-react";
 
 export function RequestIcModal() {
   const [open, setOpen] = useState(false);
@@ -40,31 +47,85 @@ export function RequestIcModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+      <DialogTrigger render={
         <Button variant="outline" className="gap-2">
           <Plus className="h-4 w-4" />
           Request New IC
         </Button>
-      </DialogTrigger>
+      } />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Request New IC</DialogTitle>
           <DialogDescription>
-            Can't find an IC in the catalog? Enter its name or part number here.
-            An admin will review it.
+            Can't find an IC in the catalog? Enter its full name and part number here.
           </DialogDescription>
+          <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 rounded-md text-xs border border-blue-200 dark:border-blue-900/50 flex flex-col gap-1">
+            <span className="font-semibold">💡 Tip</span>
+            <p>Always search the existing database before requesting a newly created entry to avoid duplicates.</p>
+          </div>
         </DialogHeader>
         <form action={onSubmit} className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="icName">IC Name or Part Number</Label>
+            <div className="flex items-center gap-1">
+              <Label htmlFor="icName">Full Manufacturer Part Number</Label>
+              <TooltipProvider>
+                <Tooltip delayDuration={300}>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>Look at the top of your component's datasheet. Include prefixes (e.g., SN, LM, CD) but ignore trailing packaging codes (e.g., -N, -SMD).</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <Input
               id="icName"
               name="icName"
-              placeholder="e.g., UA741, LM386"
+              placeholder="e.g., NE555P (Not just '555')"
               className="uppercase"
+              required
+            />
+            <p className="text-xs text-muted-foreground">
+              Provide the exact part number. This will be the main identifying name.
+            </p>
+          </div>
+          <div className="grid gap-2 mt-2">
+            <Label htmlFor="icAliases">Suggested Aliases (Optional)</Label>
+            <Input
+              id="icAliases"
+              name="icAliases"
+              placeholder="e.g., 555 timer, precision timer"
+            />
+            <p className="text-xs text-muted-foreground">
+              Comma-separated list of common names or alternate part numbers to help others find this IC.
+            </p>
+          </div>
+          <div className="grid gap-2 mt-2">
+            <Label htmlFor="datasheetUrl">Datasheet URL (Optional)</Label>
+            <Input
+              id="datasheetUrl"
+              name="datasheetUrl"
+              placeholder="https://..."
+              type="url"
             />
           </div>
-          <DialogFooter>
+          <div className="grid gap-2 mt-2">
+            <Label htmlFor="additionalDetails">Additional Details (Optional)</Label>
+            <Textarea
+              id="additionalDetails"
+              name="additionalDetails"
+              placeholder="What type of component is this, or do you know any of its alternate names?"
+              className="resize-none"
+              rows={3}
+            />
+          </div>
+          
+          <p className="text-sm text-muted-foreground mt-2">
+            Standard 74xx and CMOS chips will be added instantly. Specialized chips will be sent to the Admin queue for manual SPICE fidelity review.
+          </p>
+
+          <DialogFooter className="mt-4">
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
