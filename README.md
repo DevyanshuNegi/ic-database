@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# eSim IC Management Portal
 
-## Getting Started
+A robust, full-stack Next.js web application designed to help interns, mentors, and administrators manage the cataloging and mapping of Integrated Circuits (ICs) into the eSim database environment. 
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+* **Role-Based Workflows**: Segregated interfaces for Interns, Mentors, and Admins.
+* **Intern Portal**: 
+  * Browse and claim unused ICs from an extensive pre-seeded database.
+  * Track progress of active IC datasheet mapping tasks.
+  * Request new ICs to be added to the catalog if unlisted.
+* **Admin / Mentor Portal**:
+  * **Catalog Manager**: Comprehensive search, filter, and inline-edit interface for global IC records and aliases.
+  * **Review Queue**: Approve or reject intern task submissions with mandatory feedback loops.
+  * **Naming Requests**: Handle intern-submitted IC requests by either generating them as new canonical parts or merging them into existing parts via a smart search combobox.
+* **Resilient State Management**: Relies heavily on URL Query Parameters for routing state (pagination, filters, search), allowing fully shareable states without bulky client-side stores.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Architecture & Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Framework**: [Next.js 14 App Router](https://nextjs.org/) (React Server Components + Server Actions)
+* **Database / ORM**: [Neon Serverless Postgres](https://neon.tech/) + [Prisma ORM](https://www.prisma.io/)
+* **UI & Styling**: [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+* **Tables**: [TanStack Table v8](https://tanstack.com/table/v8) - Server-side pagination & filtering
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Local Setup
 
-## Learn More
+1. **Clone & Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Environment Configuration**
+   Create a `.env` file in the root directory:
+   ```env
+   DATABASE_URL="postgres://[user]:[password]@[neon-host]/[db]?sslmode=require"
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Database Scaffolding**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   npx tsx prisma/seed.ts
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+## Development Decisions & Tradeoffs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Data Fetching Paradigm**: Most page load data is fetched directly at the RSC (React Server Component) level. Loading states are managed natively by Next.js routers, offloading the browser.
+* **Authentication**: Currently utilizing a development-only mock cookie swapper (`dev-user-switcher.tsx`) to rapidly test Admin/Intern scopes without requiring an OAuth provider (like Auth.js) setup until production environments require it.
+* **Atomic Operations**: Core actions (like merging a part, where multiple tables must mutually agree) are strictly bound in `prisma.$transaction()` pipelines to prevent orphaned data states in the Postgres cloud due to momentary disconnects.

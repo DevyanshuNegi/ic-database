@@ -1032,8 +1032,8 @@ const statusColors = {
 | 4b | Admin interns: searchable, sortable table | ☒ |
 | 4c | Admin intern detail: full task history + inline review | ☒ |
 | 4d | Admin catalog: filtered table + Add IC dialog | ☐ |
-| 4e | Admin IC detail: edit metadata + alias manager | ☐ |
+| 4e | Admin IC detail: edit metadata + alias manager | ☒ |
 | 5a | Admin review queue: approve + mandatory-note reject | ☐ |
-| 5b | Admin requests: smart merge combobox + approve-as-new | ☐ |
+| 5b |approve-as-new | ☐ |
 
 **Do not mark a phase done until the UI renders correctly with real seeded data and all Server Actions succeed without errors.**
