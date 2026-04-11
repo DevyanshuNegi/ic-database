@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 export default async function RootPage() {
   const user = await getCurrentUser();
   if (!user) {
-    if (process.env.NODE_ENV === "development" || process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH === "true") {
+    if (process.env.NODE_ENV === "development" || process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH?.trim() === "true") {
       redirect("/api/dev/login-default");
     }
     return <div>Not authenticated</div>;

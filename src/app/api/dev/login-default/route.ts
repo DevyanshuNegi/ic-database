@@ -1,9 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { ESIM_USER_COOKIE } from "@/lib/auth";
 
-export async function GET(request: Request) {
-  if (process.env.NODE_ENV !== "development" && process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH !== "true") {
+export const dynamic = "force-dynamic";
+
+export async function GET(request: NextRequest) {
+  if (process.env.NODE_ENV !== "development" && process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH?.trim() !== "true") {
     return new NextResponse("Not found", { status: 404 });
   }
   
@@ -12,7 +14,8 @@ export async function GET(request: Request) {
     orderBy: { email: "asc" },
   });
 
-  const url = new URL("/intern/dashboard", request.url);
+  const url = request.nextUrl.clone();
+  url.pathname = "/intern/dashboard";
   const response = NextResponse.redirect(url);
 
   if (firstIntern) {

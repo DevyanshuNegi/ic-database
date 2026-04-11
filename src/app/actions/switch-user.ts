@@ -7,7 +7,7 @@ import { ESIM_USER_COOKIE } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function switchUserAction(userId: string) {
-  if (process.env.NODE_ENV !== "development" && process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH !== "true") {
+  if (process.env.NODE_ENV !== "development" && process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH?.trim() !== "true") {
     return;
   }
   const user = await prisma.user.findUnique({ where: { id: userId } });

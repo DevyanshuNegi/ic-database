@@ -18,7 +18,7 @@ export function DevUserSwitcher() {
 
   const isMockAuthEnabled =
     process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH === "true";
+    process.env.NEXT_PUBLIC_ENABLE_MOCK_AUTH?.trim() === "true";
 
   useEffect(() => {
     if (!isMockAuthEnabled) return;
