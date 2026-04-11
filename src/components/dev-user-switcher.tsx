@@ -41,6 +41,7 @@ export function DevUserSwitcher() {
       <Select
         value={activeUserId}
         onValueChange={(val) => {
+          if (!val) return;
           setActiveUserId(val);
           startTransition(() => {
             switchUserAction(val);
