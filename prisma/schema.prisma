@@ -84,6 +84,7 @@ model AddRequest {
   id                 String           @id @default(cuid())
   rawName            String
   normalizedName     String?
+  suggestedAliases   String[]         @default([])
   requesterId        String
   status             AddRequestStatus @default(PENDING)
   mergeWithIcId      String?

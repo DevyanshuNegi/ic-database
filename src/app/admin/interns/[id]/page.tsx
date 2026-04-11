@@ -6,11 +6,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistanceToNow, format } from "date-fns";
 
-export default async function AdminInternsDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function AdminInternsDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+
   await requireRole(["ADMIN", "MENTOR"]);
 
   const enrollment = await prisma.batchEnrollment.findUnique({

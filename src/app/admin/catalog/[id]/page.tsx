@@ -9,11 +9,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 
-export default async function AdminICDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function AdminICDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+
   await requireRole(["ADMIN", "MENTOR"]);
 
   const ic = await prisma.iC.findUnique({

@@ -7,6 +7,11 @@ import { revalidatePath } from "next/cache";
 export async function requestIcAction(formData: FormData) {
   const user = await requireRole("INTERN");
   const rawName = formData.get("icName")?.toString();
+  const aliasesRaw = formData.get("icAliases")?.toString();
+
+  const suggestedAliases = aliasesRaw 
+    ? aliasesRaw.split(",").map(s => s.trim()).filter(s => s.length > 0)
+    : [];
 
   if (!rawName || rawName.trim().length === 0) {
     return { error: "Please provide a valid IC name." };
@@ -53,6 +58,7 @@ export async function requestIcAction(formData: FormData) {
     data: {
       rawName: rawName.trim(),
       normalizedName,
+      suggestedAliases,
       requesterId: user.id,
       status: "PENDING"
     }

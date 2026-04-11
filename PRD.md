@@ -1022,18 +1022,18 @@ const statusColors = {
 
 | Phase | Deliverable | Done? |
 |---|---|---|
-| 0 | Next.js + Prisma + shadcn/ui scaffold, DB connected | ☐ |
-| 1 | Seed script runs, all users/ICs/tasks in DB | ☐ |
-| 2 | Role-based layouts, nav, dev switcher working | ☐ |
-| 3a | Intern dashboard: task cards + history table | ☐ |
-| 3b | Intern browse: server-side table with search/filter/claim | ☐ |
-| 3c | Request New IC modal with regex + AddRequest fallback | ☐ |
+| 0 | Next.js + Prisma + shadcn/ui scaffold, DB connected | ☒ |
+| 1 | Seed script runs, all users/ICs/tasks in DB | ☒ |
+| 2 | Role-based layouts, nav, dev switcher working | ☒ |
+| 3a | Intern dashboard: task cards + history table | ☒ |
+| 3b | Intern browse: server-side table with search/filter/claim | ☒ |
+| 3c | Request New IC modal with regex + AddRequest fallback | ☒ |
 | 4a | Admin dashboard: stats cards + quick tables | ☒ |
 | 4b | Admin interns: searchable, sortable table | ☒ |
 | 4c | Admin intern detail: full task history + inline review | ☒ |
-| 4d | Admin catalog: filtered table + Add IC dialog | ☐ |
+| 4d | Admin catalog: filtered table + Add IC dialog | ☒ |
 | 4e | Admin IC detail: edit metadata + alias manager | ☒ |
-| 5a | Admin review queue: approve + mandatory-note reject | ☐ |
-| 5b |approve-as-new | ☐ |
+| 5a | Admin review queue: approve + mandatory-note reject | ☒ |
+| 5b |approve-as-new | ☒ |
 
 **Do not mark a phase done until the UI renders correctly with real seeded data and all Server Actions succeed without errors.**
