@@ -10,15 +10,17 @@ import { InternsFilter } from "@/components/admin/interns-filter";
 export default async function AdminInternsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireRole(["ADMIN", "MENTOR"]);
 
-  const search = typeof searchParams.search === "string" ? searchParams.search : "";
-  const page = typeof searchParams.page === "string" ? parseInt(searchParams.page, 10) : 1;
+  const params = await searchParams;
+
+  const search = typeof params.search === "string" ? params.search : "";
+  const page = typeof params.page === "string" ? parseInt(params.page, 10) : 1;
   const pageSize = 25;
-  const sort = typeof searchParams.sort === "string" ? searchParams.sort : "name";
-  const order = typeof searchParams.order === "string" ? searchParams.order : "asc";
+  const sort = typeof params.sort === "string" ? params.sort : "name";
+  const order = typeof params.order === "string" ? params.order : "asc";
 
   const interns = await prisma.batchEnrollment.findMany({
     where: {

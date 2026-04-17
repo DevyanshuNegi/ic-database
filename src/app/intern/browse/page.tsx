@@ -14,6 +14,7 @@ export default async function BrowsePage({
   const params = await searchParams;
   
   const search = typeof params.search === 'string' ? params.search : undefined;
+  const description = typeof params.description === 'string' ? params.description : undefined;
   const category = typeof params.category === 'string' ? params.category : undefined;
   const technology = typeof params.technology === 'string' ? params.technology : undefined;
   const showAll = params.showAll === 'true';
@@ -31,6 +32,7 @@ export default async function BrowsePage({
 
   const { items, total } = await getIcsForLobby({
     search,
+    description,
     category,
     technology,
     showAll,

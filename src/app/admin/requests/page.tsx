@@ -18,10 +18,11 @@ import { cn } from "@/lib/utils";
 export default async function AdminRequestsPage({
   searchParams,
 }: {
-  searchParams: { status?: string; page?: string };
+  searchParams: Promise<{ status?: string; page?: string }>;
 }) {
-  const status = (searchParams.status as AddRequestStatus) || "PENDING";
-  const page = parseInt(searchParams.page || "1");
+  const params = await searchParams;
+  const status = (params.status as AddRequestStatus) || "PENDING";
+  const page = parseInt(params.page || "1");
   const pageSize = 25;
 
   const [requests, total] = await Promise.all([

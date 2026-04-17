@@ -39,6 +39,18 @@ export const columns: ColumnDef<any>[] = [
     header: "Tech",
   },
   {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => {
+      const desc = row.getValue("description") as string | undefined;
+      return (
+        <div className="max-w-[200px] truncate text-xs text-muted-foreground whitespace-nowrap" title={desc || ""}>
+          {desc || "-"}
+        </div>
+      );
+    }
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const ic = row.original;

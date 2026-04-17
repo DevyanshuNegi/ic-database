@@ -11,19 +11,21 @@ import { Prisma, ICCategory, Technology } from "@prisma/client";
 export default async function AdminCatalogPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   await requireRole(["ADMIN", "MENTOR"]);
 
-  const search = typeof searchParams.search === "string" ? searchParams.search : "";
-  const category = typeof searchParams.category === "string" ? searchParams.category as ICCategory : undefined;
-  const technology = typeof searchParams.technology === "string" ? searchParams.technology as Technology : undefined;
-  const quality = typeof searchParams.quality === "string" ? searchParams.quality : "all";
+  const params = await searchParams;
+
+  const search = typeof params.search === "string" ? params.search : "";
+  const category = typeof params.category === "string" ? params.category as ICCategory : undefined;
+  const technology = typeof params.technology === "string" ? params.technology as Technology : undefined;
+  const quality = typeof params.quality === "string" ? params.quality : "all";
   
-  const page = typeof searchParams.page === "string" ? parseInt(searchParams.page, 10) : 1;
+  const page = typeof params.page === "string" ? parseInt(params.page, 10) : 1;
   const pageSize = 50;
-  const sort = typeof searchParams.sort === "string" ? searchParams.sort : "canonicalName";
-  const order = typeof searchParams.order === "string" ? searchParams.order : "asc";
+  const sort = typeof params.sort === "string" ? params.sort : "canonicalName";
+  const order = typeof params.order === "string" ? params.order : "asc";
 
   const getWhereClause = (): Prisma.ICWhereInput => {
     return {

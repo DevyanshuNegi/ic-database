@@ -15,6 +15,7 @@ export async function getInternDashboardData(userId: string) {
 
 export type LobbyParams = {
   search?: string;
+  description?: string;
   category?: string;
   technology?: string;
   showAll?: boolean;
@@ -24,7 +25,7 @@ export type LobbyParams = {
 };
 
 export async function getIcsForLobby({
-  search, category, technology, showAll, page, pageSize, batchId
+  search, description, category, technology, showAll, page, pageSize, batchId
 }: LobbyParams) {
   const where: any = {
     AND: [
@@ -32,9 +33,9 @@ export async function getIcsForLobby({
         OR: [
           { canonicalName: { contains: search, mode: "insensitive" } },
           { aliases: { some: { name: { contains: search, mode: "insensitive" } } } },
-          { description: { contains: search, mode: "insensitive" } },
         ],
       } : {},
+      description ? { description: { contains: description, mode: "insensitive" } } : {},
       category ? { category } : {},
       technology ? { technology } : {},
       !showAll ? {
