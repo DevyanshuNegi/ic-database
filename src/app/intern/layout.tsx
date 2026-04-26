@@ -1,5 +1,5 @@
 import { requireRole } from "@/lib/auth";
-import { DevUserSwitcher } from "@/components/dev-user-switcher";
+
 import Link from "next/link";
 
 export default async function InternLayout({
@@ -34,7 +34,6 @@ export default async function InternLayout({
           </div>
           <div className="ml-auto flex items-center space-x-4">
             <span className="text-sm font-medium">{user.name}</span>
-            <DevUserSwitcher />
           </div>
         </div>
       </header>

@@ -3,7 +3,7 @@
 ## 📊 Overview
 **Project**: eSim IC Management Portal
 **Tech Stack**: Next.js 14 (App Router), TypeScript, Prisma (Neon Postgres), Tailwind CSS, shadcn/ui, TanStack Table
-**Current State**: Completed Phase 6. The application has been successfully prepared for Pre-Alpha release and Vercel deployment. Added Mock Auth support for Vercel, resolved build typecheck errors, improved UI/UX with skeleton loaders, added search by description, and refined active task limit logic.
+**Current State**: Completed Phase 7. The application has full NextAuth integration, replacing mock auth. We also built the Admin Batches UI for whitelist management.
 
 ---
 
@@ -25,6 +25,7 @@
 | **Phase 5a** | Admin Review | ✅ **Done** | Approval/Rejection queue + Server actions w/ Mandatory Feedback implemented. |
 | **Phase 5b** | Admin Requests | ✅ **Done** | Approval logic for accepting as new (`APPROVE_AS_NEW`) or merging (`MERGED`), including Server Action validations. |
 | **Phase 6** | Pre-Alpha & Deployment | ✅ **Done** | Vercel deployment config, Mock Auth for production, UI/UX skeleton loaders, Task limits updated, Search by description added. |
+| **Phase 7** | NextAuth & Batch UI | ✅ **Done** | Auth.js v5 Google Provider whitelist integrated. Admin Batch Management UI completed with bulk-add enrollments. |
 
 ---
 

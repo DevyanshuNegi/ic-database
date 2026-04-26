@@ -1037,3 +1037,21 @@ const statusColors = {
 | 5b |approve-as-new | ☒ |
 
 **Do not mark a phase done until the UI renders correctly with real seeded data and all Server Actions succeed without errors.**
+
+---
+
+### PHASE 7 — NextAuth & Editable Batch Management
+
+**Step 1: NextAuth Implementation (The Security Gate)**
+- Install `next-auth` and configure the Google Provider.
+- `signIn` Callback: Only allow sign-in if the user's email already exists in the `User` table. If it does not exist, redirect to an error page: "Access Denied: Your email is not whitelisted. Please use the exact email you provided to FOSSEE."
+- `session`/`jwt` Callback: Pass the `User.id` and `Role` into the NextAuth session so Server Components can use them.
+- Name Capture: On their very first successful login, update the Prisma User record with the name provided by the Google profile.
+- Remove all legacy Mock Auth code.
+
+**Step 2: The Batch Management UI (`/admin/batches`)**
+- Create a dedicated page for Admins to manage intern rosters.
+- Dropdown/selector to choose the active Batch.
+- Display a TanStack Table showing enrolled interns for the selected batch. Columns: Email, Name, Joined Date, Actions.
+- Action 1 (Bulk Add): Button opens a Dialog with a Textarea for comma-separated emails. A Server Action parses these, upserts into the `User` table, and creates a `BatchEnrollment`.
+- Action 2 (Remove): Trash icon to delete that specific `BatchEnrollment`.

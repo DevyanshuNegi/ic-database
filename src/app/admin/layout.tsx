@@ -1,5 +1,5 @@
 import { requireRole } from "@/lib/auth";
-import { DevUserSwitcher } from "@/components/dev-user-switcher";
+
 import Link from "next/link";
 
 export default async function AdminLayout({
@@ -50,13 +50,18 @@ export default async function AdminLayout({
                   >
                     Requests
                   </Link>
+                  <Link
+                    href="/admin/batches"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    Batches
+                  </Link>
                 </>
               )}
             </nav>
           </div>
           <div className="ml-auto flex items-center space-x-4">
             <span className="text-sm font-medium">{user.name}</span>
-            <DevUserSwitcher />
           </div>
         </div>
       </header>
