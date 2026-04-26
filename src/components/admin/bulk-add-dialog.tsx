@@ -38,8 +38,8 @@ export function BulkAddDialog({ batchId }: { batchId: string }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Bulk Add Interns</Button>
+      <DialogTrigger render={<Button />}>
+        Bulk Add Interns
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
