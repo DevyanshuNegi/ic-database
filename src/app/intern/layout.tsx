@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/auth";
 
 import Link from "next/link";
+import { LogoutButton } from "@/components/auth/logout-button";
 
 export default async function InternLayout({
   children,
@@ -34,6 +35,7 @@ export default async function InternLayout({
           </div>
           <div className="ml-auto flex items-center space-x-4">
             <span className="text-sm font-medium">{user.name}</span>
+            <LogoutButton />
           </div>
         </div>
       </header>
