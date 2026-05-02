@@ -2,6 +2,7 @@
 
 import { requireRole } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { ICStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function updateTaskStatus(formData: FormData) {
@@ -26,7 +27,7 @@ export async function updateTaskStatus(formData: FormData) {
 
   await prisma.iCTask.update({
     where: { id: taskId },
-    data: { status: status as any }
+    data: { status: status as ICStatus }
   });
 
   revalidatePath("/intern/dashboard");

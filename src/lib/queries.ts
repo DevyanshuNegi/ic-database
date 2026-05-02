@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma, ICCategory, Technology } from "@prisma/client";
 
 export async function getInternDashboardData(userId: string) {
   return prisma.batchEnrollment.findFirst({
@@ -27,7 +28,7 @@ export type LobbyParams = {
 export async function getIcsForLobby({
   search, description, category, technology, showAll, page, pageSize, batchId
 }: LobbyParams) {
-  const where: any = {
+  const where: Prisma.ICWhereInput = {
     AND: [
       search ? {
         OR: [
@@ -36,8 +37,8 @@ export async function getIcsForLobby({
         ],
       } : {},
       description ? { description: { contains: description, mode: "insensitive" } } : {},
-      category ? { category } : {},
-      technology ? { technology } : {},
+      category ? { category: category as ICCategory } : {},
+      technology ? { technology: technology as Technology } : {},
       !showAll ? {
         NOT: {
           tasks: {

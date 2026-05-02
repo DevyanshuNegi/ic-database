@@ -81,7 +81,7 @@ export function RequestReviewModal({ requestId, rawName, normalizedName, suggest
       } else if (result.error) {
         toast.error(result.error);
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to process request.");
     } finally {
       setIsLoading(false);
@@ -151,7 +151,7 @@ export function RequestReviewModal({ requestId, rawName, normalizedName, suggest
           {mode === "APPROVE_AS_NEW" && (
              <div className="space-y-4">
                <p className="text-sm">
-                 Create a new IC and link the intern's task to it.
+                 Create a new IC and link the intern&apos;s task to it.
                </p>
                <div className="grid gap-2">
                  <Label htmlFor="canonicalName">Canonical Name</Label>

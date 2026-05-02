@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatDistanceToNow, format } from "date-fns";
+import { format } from "date-fns";
 
 export default async function AdminInternsDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;

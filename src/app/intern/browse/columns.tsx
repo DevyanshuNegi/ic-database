@@ -7,7 +7,20 @@ import { claimTaskAction } from "@/app/actions/intern-actions";
 import { toast } from "sonner";
 import { useTransition } from "react";
 
-export const columns: ColumnDef<any>[] = [
+type ICAlias = { id: string; name: string };
+
+type ICRow = {
+  id: string;
+  canonicalName: string;
+  description: string | null;
+  category: string;
+  technology: string;
+  aliases: ICAlias[];
+  canClaim: boolean;
+  activeTaskId?: string;
+};
+
+export const columns: ColumnDef<ICRow>[] = [
   {
     accessorKey: "canonicalName",
     header: "IC Name",
@@ -20,7 +33,7 @@ export const columns: ColumnDef<any>[] = [
       const aliases = row.original.aliases || [];
       return (
         <div className="flex flex-wrap gap-1">
-          {aliases.map((a: any) => (
+          {aliases.map((a: ICAlias) => (
             <Badge key={a.id} variant="secondary" className="text-xs font-mono py-0 h-5">
               {a.name}
             </Badge>
@@ -83,8 +96,8 @@ function ClaimButton({ icId, canClaim, activeTaskId }: { icId: string, canClaim:
             } else {
               toast.success("IC claimed successfully!");
             }
-          } catch (e: any) {
-            toast.error(e.message || "Failed to claim IC");
+          } catch (e: unknown) {
+            toast.error(e instanceof Error ? e.message : "Failed to claim IC");
           }
         });
       }}

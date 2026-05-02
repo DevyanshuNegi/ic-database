@@ -11,7 +11,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ReviewActionModal } from "@/components/admin/review-action-modal";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default async function AdminReviewQueuePage() {
   const tasks = await prisma.iCTask.findMany({
@@ -53,7 +52,7 @@ export default async function AdminReviewQueuePage() {
                 </TableCell>
               </TableRow>
             ) : (
-              tasks.map((task: any) => (
+              tasks.map((task) => (
                 <TableRow key={task.id}>
                   <TableCell className="font-medium">
                     <Link href={`/admin/catalog/${task.ic.id}`} className="hover:underline text-blue-600">

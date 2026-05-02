@@ -4,6 +4,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  type ColumnDef,
+  type Row,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -19,7 +21,16 @@ import { removeBatchEnrollmentAction } from "@/app/actions/batch-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export function BatchesTable({ data }: { data: any[] }) {
+type BatchEnrollmentRow = {
+  id: string;
+  user: {
+    email: string;
+    name: string;
+    createdAt: Date;
+  };
+};
+
+export function BatchesTable({ data }: { data: BatchEnrollmentRow[] }) {
   const router = useRouter();
 
   const handleRemove = async (enrollmentId: string) => {
@@ -28,12 +39,12 @@ export function BatchesTable({ data }: { data: any[] }) {
       await removeBatchEnrollmentAction(enrollmentId);
       toast.success("Enrollment removed");
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to remove enrollment");
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to remove enrollment");
     }
   };
 
-  const columns = [
+  const columns: ColumnDef<BatchEnrollmentRow>[] = [
     {
       accessorKey: "user.email",
       header: "Email",
@@ -41,7 +52,7 @@ export function BatchesTable({ data }: { data: any[] }) {
     {
       accessorKey: "user.name",
       header: "Name",
-      cell: ({ row }: any) => {
+      cell: ({ row }: { row: Row<BatchEnrollmentRow> }) => {
         const name = row.original.user.name;
         return name === "Pending" ? (
           <span className="text-muted-foreground italic">Pending Login</span>
@@ -53,14 +64,14 @@ export function BatchesTable({ data }: { data: any[] }) {
     {
       accessorKey: "createdAt",
       header: "Joined Date",
-      cell: ({ row }: any) => {
+      cell: ({ row }: { row: Row<BatchEnrollmentRow> }) => {
         return new Date(row.original.user.createdAt).toLocaleDateString();
       },
     },
     {
       id: "actions",
       header: "Actions",
-      cell: ({ row }: any) => {
+      cell: ({ row }: { row: Row<BatchEnrollmentRow> }) => {
         return (
           <Button
             variant="ghost"

@@ -10,6 +10,21 @@ import { prisma } from "../src/lib/prisma";
 import fs from "fs";
 import path from "path";
 
+type ICAssignment = {
+  internName: string;
+  batchLabel: string;
+  status: string;
+};
+
+type ICRow = {
+  canonicalName: string;
+  description?: string;
+  category?: string;
+  technology?: string;
+  aliases?: string[];
+  assignments?: ICAssignment[];
+};
+
 function parseBatchLabel(label: string): { season: InternshipSeason; year: number; finalLabel: string } {
     const l = label.toLowerCase();
     if (l.includes("summer")) return { season: InternshipSeason.SUMMER, year: 2026, finalLabel: "Summer 2026" };
@@ -20,7 +35,7 @@ function parseBatchLabel(label: string): { season: InternshipSeason; year: numbe
 
 async function main() {
   const jsonPath = path.join(__dirname, "../deepseek_json_20260410_f96bb7.json");
-  const data = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
+  const data: ICRow[] = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 
   // Delete everything
   console.log("Cleaning database...");
@@ -118,7 +133,7 @@ async function main() {
   for (let i = 0; i < data.length; i += chunkSize) {
     const chunk = data.slice(i, i + chunkSize);
     await Promise.all(
-      chunk.map(async (row: any) => {
+      chunk.map(async (row: ICRow) => {
         try {
           if (seenCanonical.has(row.canonicalName)) {
              console.log(`Skipping duplicate canonicalName: ${row.canonicalName}`);
@@ -156,7 +171,7 @@ async function main() {
               if (!enrollmentId) continue;
 
               let finalStatus = a.status as ICStatus;
-              if ((finalStatus as any) === "Under review by mentor") {
+              if ((finalStatus as string) === "Under review by mentor") {
                 finalStatus = ICStatus.UNDER_REVIEW;
               }
 

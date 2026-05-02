@@ -62,7 +62,7 @@ export default async function AdminCatalogPage({
       },
       skip: (page - 1) * pageSize,
       take: pageSize,
-      orderBy: { [sort]: order as any },
+      orderBy: { [sort]: order as Prisma.SortOrder },
     }),
     prisma.iC.count({ where }),
   ]);

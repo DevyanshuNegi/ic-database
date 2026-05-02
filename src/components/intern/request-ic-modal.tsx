@@ -38,7 +38,7 @@ export function RequestIcModal() {
         toast.success(result.success);
         setOpen(false);
       }
-    } catch (e) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
@@ -57,7 +57,7 @@ export function RequestIcModal() {
         <DialogHeader>
           <DialogTitle>Request New IC</DialogTitle>
           <DialogDescription>
-            Can't find an IC in the catalog? Enter its full name and part number here.
+            Can&apos;t find an IC in the catalog? Enter its full name and part number here.
           </DialogDescription>
           <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 rounded-md text-xs border border-blue-200 dark:border-blue-900/50 flex flex-col gap-1">
             <span className="font-semibold">💡 Tip</span>
@@ -74,7 +74,7 @@ export function RequestIcModal() {
                     <Info className="h-4 w-4 text-muted-foreground cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>Look at the top of your component's datasheet. Include prefixes (e.g., SN, LM, CD) but ignore trailing packaging codes (e.g., -N, -SMD).</p>
+                    <p>Look at the top of your component&apos;s datasheet. Include prefixes (e.g., SN, LM, CD) but ignore trailing packaging codes (e.g., -N, -SMD).</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

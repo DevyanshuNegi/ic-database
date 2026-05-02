@@ -4,6 +4,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  type ColumnDef,
 } from "@tanstack/react-table";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -25,12 +26,12 @@ import {
 } from "@/components/ui/select";
 import { useDebouncedCallback } from "use-debounce";
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData>({
   columns,
   data,
   total,
 }: {
-  columns: any[];
+  columns: ColumnDef<TData>[];
   data: TData[];
   total: number;
 }) {

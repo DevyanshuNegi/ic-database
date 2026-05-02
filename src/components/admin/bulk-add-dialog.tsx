@@ -29,8 +29,8 @@ export function BulkAddDialog({ batchId }: { batchId: string }) {
       setOpen(false);
       setEmails("");
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to add interns");
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to add interns");
     } finally {
       setLoading(false);
     }
