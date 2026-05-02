@@ -25,21 +25,18 @@ export default async function AdminRequestsPage({
   const page = parseInt(params.page || "1");
   const pageSize = 25;
 
-  const [requests, total] = await Promise.all([
-    prisma.addRequest.findMany({
-      where: { status },
-      include: {
-        requester: true,
-        reviewer: true,
-        suggestedMergeWith: true,
-        createdIc: true,
-      },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      orderBy: { createdAt: "asc" },
-    }),
-    prisma.addRequest.count({ where: { status } }),
-  ]);
+  const requests = await prisma.addRequest.findMany({
+    where: { status },
+    include: {
+      requester: true,
+      reviewer: true,
+      suggestedMergeWith: true,
+      createdIc: true,
+    },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    orderBy: { createdAt: "asc" },
+  });
 
   const [pendingCount, approvedCount, mergedCount, rejectedCount] = await Promise.all([
     prisma.addRequest.count({ where: { status: "PENDING" } }),

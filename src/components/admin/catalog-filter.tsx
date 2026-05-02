@@ -23,7 +23,8 @@ export function CatalogFilter() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, router]); // omitted searchParams to avoid loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- searchParams intentionally omitted to prevent infinite loop
+  }, [search, router]);
 
   const updateParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());

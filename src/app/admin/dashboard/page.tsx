@@ -10,6 +10,9 @@ import { formatDistanceToNow } from "date-fns";
 export default async function AdminDashboardPage() {
   const user = await requireRole(["ADMIN", "MENTOR"]);
 
+  // eslint-disable-next-line react-hooks/purity -- Date.now() is intentional in this server component
+  const twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+
   const [
     totalICs,
     unclaimedICs,
@@ -72,7 +75,7 @@ export default async function AdminDashboardPage() {
     }),
     prisma.iCTask.findMany({
       where: {
-        updatedAt: { gte: new Date(Date.now() - 48 * 60 * 60 * 1000) },
+        updatedAt: { gte: twoDaysAgo },
       },
       include: {
         ic: true,

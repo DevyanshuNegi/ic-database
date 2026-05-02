@@ -47,7 +47,7 @@ export function ReviewActionModal({ taskId, icName, internName, action }: Review
       } else {
         toast.error(result.error || "An error occurred.");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to perform action.");
     } finally {
       setIsLoading(false);

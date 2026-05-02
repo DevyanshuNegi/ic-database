@@ -3,11 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatDistanceToNow, format } from "date-fns";
+import { format } from "date-fns";
 import { ICMetadataManager } from "@/components/admin/ic-metadata-manager";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
 
 export default async function AdminICDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;

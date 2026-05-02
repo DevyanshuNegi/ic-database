@@ -23,7 +23,8 @@ export function InternsFilter() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, router]); // omitted searchParams to avoid loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- searchParams intentionally omitted to prevent infinite loop
+  }, [search, router]);
 
   return (
     <div className="flex items-center gap-4 mb-4">

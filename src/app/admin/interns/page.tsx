@@ -19,7 +19,6 @@ export default async function AdminInternsPage({
   const search = typeof params.search === "string" ? params.search : "";
   const page = typeof params.page === "string" ? parseInt(params.page, 10) : 1;
   const pageSize = 25;
-  const sort = typeof params.sort === "string" ? params.sort : "name";
   const order = typeof params.order === "string" ? params.order : "asc";
 
   const interns = await prisma.batchEnrollment.findMany({
@@ -33,7 +32,7 @@ export default async function AdminInternsPage({
     },
     skip: (page - 1) * pageSize,
     take: pageSize,
-    orderBy: { user: { name: (order as any) } }, // Simplified sort for now
+    orderBy: { user: { name: order as "asc" | "desc" } }, // Simplified sort for now
   });
 
   const totalInterns = await prisma.batchEnrollment.count({
